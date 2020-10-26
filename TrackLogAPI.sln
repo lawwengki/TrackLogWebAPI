@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBaseLib", "CoreBaseLib\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackLogAPI", "TrackLogAPI\TrackLogAPI.csproj", "{ECE7AA05-68D9-4C41-8EFD-367764277F06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackLogAPIConsole", "TrackLogAPIConsole\TrackLogAPIConsole.csproj", "{A45288E7-2198-4D94-B8EC-326277C087F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{ECE7AA05-68D9-4C41-8EFD-367764277F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECE7AA05-68D9-4C41-8EFD-367764277F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECE7AA05-68D9-4C41-8EFD-367764277F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45288E7-2198-4D94-B8EC-326277C087F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45288E7-2198-4D94-B8EC-326277C087F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45288E7-2198-4D94-B8EC-326277C087F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45288E7-2198-4D94-B8EC-326277C087F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
