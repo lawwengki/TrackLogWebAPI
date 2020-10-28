@@ -27,7 +27,7 @@ namespace CoreBaseLib.Models
         public string state { get; set; }
         public string country { get; set; }
         [Required]
-        public long browser_sessionid { get; set; }
+        public string browser_sessionid { get; set; }
         public string user_ip { get; set; }
         public string browser_user_agent { get; set; }
         public string clickid { get; set; }

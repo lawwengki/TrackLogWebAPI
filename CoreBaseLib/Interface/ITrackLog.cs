@@ -16,15 +16,15 @@ namespace CoreBaseLib.Models
         RVal PurchaselgAddData(PurchaselgModel data);
         RVal SearchlgAddData(SearchlgModel data);
         RVal SubscribelgAddData(SubscribelgModel data);
-        AddtoCartRModel GetAddToCartData();
-        AddPaymentInfoRModel GetPaymentInfoData();
-        AddToWishlistRModel GetAddToWishListData();
-        CompleteRegistrationRModel  GetCompleteRegistrationData();
-        InitiateCheckoutRModel GetInitiateCheckOutData();
-        PageViewRModel  GetPageViewData();
-        PurchaseRModel GetPurchaseData();
-        SearchRModel GetSearchData();
-        SubscribeRModel  GetSubscribeData();
+        List<AddtoCartRModel> GetAddToCartData();
+        List<AddPaymentInfoRModel> GetPaymentInfoData();
+        List<AddToWishlistRModel> GetAddToWishListData();
+        List<CompleteRegistrationRModel> GetCompleteRegistrationData();
+        List<InitiateCheckoutRModel> GetInitiateCheckOutData();
+        List<PageViewRModel> GetPageViewData();
+        List<PurchaseRModel> GetPurchaseData();
+        List<SearchRModel> GetSearchData();
+        List<SubscribeRModel> GetSubscribeData();
 
     }
 }

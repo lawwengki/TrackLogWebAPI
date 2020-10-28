@@ -92,7 +92,7 @@ namespace CoreBase.Controllers
          [HttpGet]
         public ActionResult GetAddtoCart()
         {
-            var result = new AddtoCartRModel();
+            var result = new List<AddtoCartRModel>();
             var re = Request;
             var headers = re.Headers;
             var hasToken = false;
@@ -107,7 +107,7 @@ namespace CoreBase.Controllers
 
                 var decodedToken = Encoding.UTF8.GetString(bytes);
                 if (decodedToken == tokenPwd)
-                {
+                        {
                     result = _TrackLog.GetAddToCartData();
                 }
                 else {  
@@ -122,7 +122,7 @@ namespace CoreBase.Controllers
         [HttpGet]
         public ActionResult GetPaymentInfo()
         {
-            var result = new AddPaymentInfoRModel();
+            var result = new List<AddPaymentInfoRModel>();
             var re = Request;
             var headers = re.Headers;
             var hasToken = false;
@@ -154,7 +154,7 @@ namespace CoreBase.Controllers
         [HttpGet]
         public ActionResult GetAddToWishList()
         {
-            var result = new AddToWishlistRModel();
+            var result = new List<AddToWishlistRModel>();
             var re = Request;
             var headers = re.Headers;
             var hasToken = false;
@@ -184,9 +184,9 @@ namespace CoreBase.Controllers
         }
 
         [HttpGet]
-        public ActionResult<CompleteRegistrationRModel> GetCompleteRegistration()
+        public ActionResult GetCompleteRegistration()
         {
-            var result = new CompleteRegistrationRModel();
+            var result = new List<CompleteRegistrationRModel>();
             var re = Request;
             var headers = re.Headers;
             var hasToken = false;
@@ -218,7 +218,7 @@ namespace CoreBase.Controllers
         [HttpGet]
         public ActionResult GetInitiateCheckOut()
         {
-            var result = new InitiateCheckoutRModel();
+            var result = new List<InitiateCheckoutRModel>();
             var re = Request;
             var headers = re.Headers;
             var hasToken = false;
@@ -250,7 +250,7 @@ namespace CoreBase.Controllers
         [HttpGet]
         public ActionResult<PageViewRModel> GetPageView()
         {
-            var result = new PageViewRModel();
+            var result = new List<PageViewRModel>();
             var re = Request;
             var headers = re.Headers;
             var hasToken = false;
@@ -282,7 +282,7 @@ namespace CoreBase.Controllers
         [HttpGet]
         public ActionResult GetPurchase()
         {
-            var result = new PurchaseRModel();
+            var result = new List<PurchaseRModel>();
             var re = Request;
             var headers = re.Headers;
             var hasToken = false;
@@ -313,7 +313,7 @@ namespace CoreBase.Controllers
         [HttpGet]
         public ActionResult GetSearch()
         {
-            var result = new SearchRModel();
+            var result = new List<SearchRModel>();
             var re = Request;
             var headers = re.Headers;
             var hasToken = false;
@@ -345,7 +345,7 @@ namespace CoreBase.Controllers
         [HttpGet]
         public ActionResult<SubscribeRModel> GetSubscribe()
         {
-            var result = new SubscribeRModel();
+            var result = new List<SubscribeRModel>();
             var re = Request;
             var headers = re.Headers;
             var hasToken = false;
