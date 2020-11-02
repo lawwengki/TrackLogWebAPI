@@ -88,8 +88,14 @@ namespace CoreBase.Controllers
             var result = _TrackLog.SubscribelgAddData(data);
             return new JsonResult(result);
         }
+        [HttpGet]
+        public ActionResult ResetAllEventsData()
+        {
+            var result = _TrackLog.ResetEvents();
+            return new JsonResult(result);
+        }
 
-         [HttpGet]
+        [HttpGet]
         public ActionResult GetAddtoCart()
         {
             var result = new List<AddtoCartRModel>();
@@ -118,6 +124,8 @@ namespace CoreBase.Controllers
 
             return new JsonResult(result);
         }
+
+
 
         [HttpGet]
         public ActionResult GetPaymentInfo()
@@ -373,5 +381,8 @@ namespace CoreBase.Controllers
 
             return new JsonResult(result);
         }
+
+
+
     }
 }

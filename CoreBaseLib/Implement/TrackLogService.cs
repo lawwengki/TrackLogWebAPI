@@ -645,5 +645,22 @@ namespace CoreBaseLib.Models
             return rval;
         }
 
+        //temp table reset for tiger pistol testing purpose
+        public RVal ResetEvents()
+        {
+            string strUpdate = @"UPDATE add_to_cart_lg set status = 0; " + 
+             @"UPDATE add_payment_info_lg set status = 0; " +
+            @"UPDATE add_to_wish_list_lg set status = 0;  " +
+             @"UPDATE complete_reg_lg set status = 0;  " +
+             @"UPDATE init_checkout_lg set status = 0;  " +
+             @"UPDATE page_view_lg set status = 0;  " +
+             @"UPDATE purchase_lg set status = 0;  " +
+             @"UPDATE search_lg set status = 0;  " +
+             @"UPDATE subscribe_lg set status = 0;  ";
+
+            var rval = _dbHelper.ExecuteNpgNonQuery(strUpdate);
+            return rval;
+            
+        }
     }
 }

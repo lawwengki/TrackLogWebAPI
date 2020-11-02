@@ -26,5 +26,7 @@ namespace CoreBaseLib.Models
         List<SearchRModel> GetSearchData();
         List<SubscribeRModel> GetSubscribeData();
 
+        RVal ResetEvents();
+
     }
 }
