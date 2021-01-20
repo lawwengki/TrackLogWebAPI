@@ -23,7 +23,7 @@ namespace CoreBaseLib.Models
         public string last_name { get; set; }
         public string phone { get; set; }
         public string gender { get; set; }
-        public DateTime DOB { get; set; }
+        public string DOB { get; set; }
         public string city { get; set; }
         public string state { get; set; }
         public string country { get; set; }

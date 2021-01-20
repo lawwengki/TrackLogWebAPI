@@ -113,16 +113,16 @@ namespace CoreBase.Controllers
 
                 var decodedToken = Encoding.UTF8.GetString(bytes);
                 if (decodedToken == tokenPwd)
-                        {
+                            {
                     result = _TrackLog.GetAddToCartData();
-                }
+        }
                 else {  
                 }
-            }
-            else {
-            }
+                }
+                else {
+                }
 
-            return new JsonResult(result);
+return new JsonResult(result);
         }
 
 

@@ -179,7 +179,7 @@ namespace SqlLib2
         /// <returns>影響的行數</returns>
         public int ExecuteTransaction(string sqlTxt, object cmdParms = null)
         {
-            using (IDbConnection conn = CreateDapperConnection())
+            using (IDbConnection conn = CreateDapperNpgConnection())
             {
                 conn.Open();
                 IDbTransaction transaction = conn.BeginTransaction();

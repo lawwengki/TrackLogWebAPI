@@ -71,7 +71,7 @@ namespace SqlLib2
                 return rval;
             }
         }
-
+      
         public RVal ExecuteNpgNonQuery(List<IDbCommand> cmdList)
         {
             using (NpgsqlConnection conn = this.GetConnection())

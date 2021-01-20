@@ -27,12 +27,18 @@ namespace CoreBaseLib.Models
             var cmd = cmdHelper.GetInsertCmd(data);
             var rval = _dbHelper.ExecuteNpgNonQuery(cmd);
 
-            if(data.Products.Count> 0) {
+            if (data.Products.Count > 0)
+            {
                 foreach (var product in data.Products)
                 {
-                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (" +
-                        data.eventid.ToString() +","+ product.productid.ToString() + "," + product.quantity.ToString() + ")";
-                    rval = _dbHelper.ExecuteNpgNonQuery(insertSQL);
+                    var @params = new
+                    {
+                        eventid = data.eventid,
+                        productid = product.productid,
+                        quantity = product.quantity
+                    };
+                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (@eventid,@productid,@quantity)";
+                    int result = _dapperHelper.ExecuteTransaction(insertSQL, @params);
                 }
 
 
@@ -50,12 +56,19 @@ namespace CoreBaseLib.Models
             {
                 foreach (var product in data.Products)
                 {
-                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (" +
-                        data.eventid.ToString() + "," + product.productid.ToString() + "," + product.quantity.ToString() + ")";
-                    rval = _dbHelper.ExecuteNpgNonQuery(insertSQL);
+                    var @params = new
+                    {
+                        eventid = data.eventid,
+                        productid = product.productid,
+                        quantity = product.quantity
+                    };
+                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (@eventid,@productid,@quantity)";
+                    int result = _dapperHelper.ExecuteTransaction(insertSQL, @params);
                 }
+
+
             }
-                return rval;
+            return rval;
         }
 
         public RVal AddToWishlistlgAddData(AddToWishlistlgModel data)
@@ -65,14 +78,21 @@ namespace CoreBaseLib.Models
             var cmd = cmdHelper.GetInsertCmd(data);
             var rval = _dbHelper.ExecuteNpgNonQuery(cmd);
 
-          if (data.Products.Count > 0)
+            if (data.Products.Count > 0)
             {
                 foreach (var product in data.Products)
                 {
-                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (" +
-                        data.eventid.ToString() + "," + product.productid.ToString() + "," + product.quantity.ToString() + ")";
-                    rval = _dbHelper.ExecuteNpgNonQuery(insertSQL);
+                    var @params = new
+                    {
+                        eventid = data.eventid,
+                        productid = product.productid,
+                        quantity = product.quantity
+                    };
+                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (@eventid,@productid,@quantity)";
+                    int result = _dapperHelper.ExecuteTransaction(insertSQL, @params);
                 }
+
+
             }
 
             return rval;
@@ -99,10 +119,17 @@ namespace CoreBaseLib.Models
             {
                 foreach (var product in data.Products)
                 {
-                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (" +
-                        data.eventid.ToString() + "," + product.productid.ToString() + "," + product.quantity.ToString() + ")";
-                    rval = _dbHelper.ExecuteNpgNonQuery(insertSQL);
+                    var @params = new
+                    {
+                        eventid = data.eventid,
+                        productid = product.productid,
+                        quantity = product.quantity
+                    };
+                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (@eventid,@productid,@quantity)";
+                    int result = _dapperHelper.ExecuteTransaction(insertSQL, @params);
                 }
+
+
             }
 
             return rval;
@@ -128,10 +155,17 @@ namespace CoreBaseLib.Models
             {
                 foreach (var product in data.Products)
                 {
-                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (" +
-                        data.eventid.ToString() + "," + product.productid.ToString() + "," + product.quantity.ToString() + ")";
-                    rval = _dbHelper.ExecuteNpgNonQuery(insertSQL);
+                    var @params = new
+                    {
+                        eventid = data.eventid,
+                        productid = product.productid,
+                        quantity = product.quantity
+                    };
+                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (@eventid,@productid,@quantity)";
+                    int result = _dapperHelper.ExecuteTransaction(insertSQL, @params);
                 }
+
+
             }
 
             return rval;
@@ -149,10 +183,17 @@ namespace CoreBaseLib.Models
             {
                 foreach (var product in data.Products)
                 {
-                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (" +
-                        data.eventid.ToString() + "," + product.productid.ToString() + "," + product.quantity.ToString() + ")";
-                    rval = _dbHelper.ExecuteNpgNonQuery(insertSQL);
+                    var @params = new
+                    {
+                        eventid = data.eventid,
+                        productid = product.productid,
+                        quantity = product.quantity
+                    };
+                    string insertSQL = "INSERT INTO products(eventid, productid, quantity) VALUES (@eventid,@productid,@quantity)";
+                    int result = _dapperHelper.ExecuteTransaction(insertSQL, @params);
                 }
+
+
             }
 
             return rval;
@@ -170,54 +211,44 @@ namespace CoreBaseLib.Models
         public List<AddtoCartRModel> GetAddToCartData()
         {
             List<AddtoCartRModel> list = new List<AddtoCartRModel>();
-            long tempid = 0;
+
             LockRecordData("add_to_cart_lg");
-            var sqlTxt = @"SELECT *
-                                    FROM add_to_cart_lg  inner join products ON add_to_cart_lg.eventid = products.eventid 
-                                    WHERE status = 1 order by add_to_cart_lg.eventid, createtimestamp asc";
+            var sqlTxt = @"select  * from usp_getaddtocart()";
              var result = _dapperHelper.Query(sqlTxt);
 
                 foreach (var item in result)
             {
-                if (tempid == 0 || tempid != item.eventid) { 
-              //  list = new List<AddtoCartRModel>();
-                var pd = new List<Products>();
+                    var pd = new List<Products>();
+                    var @params = new { eventid = item._eventid };
+                    var sqlProd = @"select  * from usp_getproducts(@eventid)";
+                    var ProdResult = _dapperHelper.Query(sqlProd, @params);
 
-                foreach (var prod in result)
-                {
-                        if (prod.eventid == item.eventid)
-                        {
-                            pd.Add(new Products() { productid = prod.productid, quantity = prod.quantity });
-                        }
-                        else {
-                           //  need create a temp
-                            //break;
-                        }
+                    foreach (var prod in ProdResult)
+                    {
+                            pd.Add(new Products() { productid = prod._productid, quantity = prod._quantity });
                     }
 
                     list.Add(new AddtoCartRModel() { 
-                        eventid = item.eventid,
+                        eventid = item._eventid,
                         Products = pd,
-                        currency = item.currency,
-                        total_value = item.total_value,
-                        url = item.url,
-                        email = item.email,
-                        first_name = item.first_name,
-                        last_name = item.last_name,
-                        phone = item.phone,
-                        gender = item.gender,
-                        DOB = item.dob,
-                        city = item.city,
-                        state = item.state,
-                        country = item.country,
-                        user_ip = item.user_ip,
-                        browser_user_agent = item.browser_user_agent,
-                        clickid = item.clickid,
-                        browserid = item.browserid,
-                        fb_loginid = item.fb_loginid,
+                        currency = item._currency,
+                        total_value = item._total_value,
+                        url = item._url,
+                        email = item._email,
+                        first_name = item._first_name,
+                        last_name = item._last_name,
+                        phone = item._phone,
+                        gender = item._gender,
+                        DOB = item._dob,
+                        city = item._city,
+                        state = item._state,
+                        country = item._country,
+                        user_ip = item._user_ip,
+                        browser_user_agent = item._browser_user_agent,
+                        clickid = item._clickid,
+                        browserid = item._browserid,
+                        fb_loginid = item._fb_loginid,
                 } );
-                tempid = item.eventid;
-            }
                 
             }
             UpdateCompleteRecord("add_to_cart_lg");
@@ -227,56 +258,47 @@ namespace CoreBaseLib.Models
         public List<AddPaymentInfoRModel>  GetPaymentInfoData()
         {
             List < AddPaymentInfoRModel> list = new List<AddPaymentInfoRModel>();
-            long tempid = 0;
+  
             LockRecordData("add_payment_info_lg");
-            var sqlTxt = @"SELECT *
-                                    FROM add_payment_info_lg  inner join products ON add_payment_info_lg.eventid = products.eventid 
-                                    WHERE status = 1 order by createtimestamp asc";
+
+            var sqlTxt = @"select  * from usp_getpaymentinfo()";
             var result = _dapperHelper.Query(sqlTxt);
 
             foreach (var item in result)
             {
-                if (tempid == 0 || tempid != item.eventid)
-                {
-                   // list = new AddPaymentInfoRModel();
                     var pd = new List<Products>();
-                  //  list.eventid = item.eventid;
-                    foreach (var prod in result)
+                    var @params = new { eventid = item._eventid };
+                    var sqlProd = @"select  * from usp_getproducts(@eventid)";
+                    var ProdResult = _dapperHelper.Query(sqlProd, @params);
+
+                    foreach (var prod in ProdResult)
                     {
-                        if (prod.eventid == item.eventid)
-                        {
-                            pd.Add(new Products() { productid = prod.productid, quantity = prod.quantity });
-                        }
-                        else
-                        {
-                         //   break;
-                        }
+                        pd.Add(new Products() { productid = prod._productid, quantity = prod._quantity });
                     }
 
                     list.Add(new AddPaymentInfoRModel()
                     {
-                        eventid = item.eventid,
+                        eventid = item._eventid,
                         Products = pd,
-                        currency = item.currency,
-                        value = item.value,
-                        url = item.url,
-                        email = item.email,
-                        first_name = item.first_name,
-                        last_name = item.last_name,
-                        phone = item.phone,
-                        gender = item.gender,
-                        DOB = item.dob,
-                        city = item.city,
-                        state = item.state,
-                        country = item.country,
-                        user_ip = item.user_ip,
-                        browser_user_agent = item.browser_user_agent,
-                        clickid = item.clickid,
-                        browserid = item.browserid,
-                        fb_loginid = item.fb_loginid,
+                        currency = item._currency,
+                        value = item._value,
+                        url = item._url,
+                        email = item._email,
+                        first_name = item._first_name,
+                        last_name = item._last_name,
+                        phone = item._phone,
+                        gender = item._gender,
+                        DOB = item._dob,
+                        city = item._city,
+                        state = item._state,
+                        country = item._country,
+                        user_ip = item._user_ip,
+                        browser_user_agent = item._browser_user_agent,
+                        clickid = item._clickid,
+                        browserid = item._browserid,
+                        fb_loginid = item._fb_loginid,
                     });
-                }
-                tempid = item.eventid;
+
             }
             UpdateCompleteRecord("add_payment_info_lg");
             return list;
@@ -287,55 +309,46 @@ namespace CoreBaseLib.Models
         public List<AddToWishlistRModel> GetAddToWishListData()
         {
             List < AddToWishlistRModel> list = new List<AddToWishlistRModel>();
-            long tempid = 0;
+ 
             LockRecordData("add_to_wish_list_lg");
-            var sqlTxt = @"SELECT *
-                                    FROM add_to_wish_list_lg  inner join products ON add_to_wish_list_lg.eventid = products.eventid 
-                                    WHERE status = 1 order by createtimestamp asc";
+
+            var sqlTxt = @"select  * from usp_GetAddToWishList()";
             var result = _dapperHelper.Query(sqlTxt);
 
             foreach (var item in result)
             {
-                if (tempid == 0 || tempid != item.eventid)
-                {
-                //    list = new AddToWishlistRModel();
                     var pd = new List<Products>();
-                  //  list.eventid = item.eventid;
-                    foreach (var prod in result)
+                    var @params = new { eventid = item._eventid };
+                    var sqlProd = @"select  * from usp_getproducts(@eventid)";
+                    var ProdResult = _dapperHelper.Query(sqlProd, @params);
+
+                    foreach (var prod in ProdResult)
                     {
-                        if (prod.eventid == item.eventid)
-                        {
-                            pd.Add(new Products() { productid = prod.productid, quantity = prod.quantity });
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        pd.Add(new Products() { productid = prod._productid, quantity = prod._quantity });
                     }
+
                     list.Add(new AddToWishlistRModel()
                     {
-                        eventid = item.eventid,
+                        eventid = item._eventid,
                         Products = pd,
-                        currency = item.currency,
-                        value = item.value,
-                        url = item.url,
-                        email = item.email,
-                        first_name = item.first_name,
-                        last_name = item.last_name,
-                        phone = item.phone,
-                        gender = item.gender,
-                        DOB = item.dob,
-                        city = item.city,
-                        state = item.state,
-                        country = item.country,
-                        user_ip = item.user_ip,
-                        browser_user_agent = item.browser_user_agent,
-                        clickid = item.clickid,
-                        browserid = item.browserid,
-                        fb_loginid = item.fb_loginid,
+                        currency = item._currency,
+                        value = item._value,
+                        url = item._url,
+                        email = item._email,
+                        first_name = item._first_name,
+                        last_name = item._last_name,
+                        phone = item._phone,
+                        gender = item._gender,
+                        DOB = item._dob,
+                        city = item._city,
+                        state = item._state,
+                        country = item._country,
+                        user_ip = item._user_ip,
+                        browser_user_agent = item._browser_user_agent,
+                        clickid = item._clickid,
+                        browserid = item._browserid,
+                        fb_loginid = item._fb_loginid,
                     });
-                }
-                tempid = item.eventid;
             }
             UpdateCompleteRecord("add_to_wish_list_lg");
             return list;
@@ -346,33 +359,34 @@ namespace CoreBaseLib.Models
         {
             List <CompleteRegistrationRModel> list = new List<CompleteRegistrationRModel>();
             LockRecordData("complete_reg_lg");
-            var sqlTxt = @"SELECT * FROM complete_reg_lg WHERE status = 1  order by createtimestamp asc  ";
+
+            var sqlTxt = @"select  * from usp_GetCompleteRegistration()";
             var result = _dapperHelper.Query(sqlTxt);
 
             foreach (var item in result)
             {
-                //    list = new CompleteRegistrationRModel();
+
                 list.Add(new CompleteRegistrationRModel()
                 {
-                    eventid = item.eventid,
-                    content_name = item.content_name,
-                    reg_status = item.reg_status,
-                    currency = item.currency,
-                    total_value = item.total_value,
-                    email = item.email,
-                    first_name = item.first_name,
-                    last_name = item.last_name,
-                    phone = item.phone,
-                    gender = item.gender,
-                    DOB = item.dob,
-                    city = item.city,
-                    state = item.state,
-                    country = item.country,
-                    user_ip = item.user_ip,
-                    browser_user_agent = item.browser_user_agent,
-                    clickid = item.clickid,
-                    browserid = item.browserid,
-                    fb_loginid = item.fb_loginid,
+                    eventid = item._eventid,
+                    content_name = item._content_name,
+                    reg_status = item._reg_status,
+                    currency = item._currency,
+                    total_value = item._total_value,
+                    email = item._email,
+                    first_name = item._first_name,
+                    last_name = item._last_name,
+                    phone = item._phone,
+                    gender = item._gender,
+                    DOB = item._dob,
+                    city = item._city,
+                    state = item._state,
+                    country = item._country,
+                    user_ip = item._user_ip,
+                    browser_user_agent = item._browser_user_agent,
+                    clickid = item._clickid,
+                    browserid = item._browserid,
+                    fb_loginid = item._fb_loginid,
                 });
             }
             UpdateCompleteRecord("complete_reg_lg");
@@ -382,54 +396,44 @@ namespace CoreBaseLib.Models
         public List<InitiateCheckoutRModel>  GetInitiateCheckOutData()
         {
             List<InitiateCheckoutRModel> list = new List<InitiateCheckoutRModel>();
-            long tempid = 0;
+ 
             LockRecordData("init_checkout_lg");
-            var sqlTxt = @"SELECT *
-                                    FROM init_checkout_lg  inner join products ON init_checkout_lg.eventid = products.eventid 
-                                    WHERE status = 1 order by createtimestamp asc";
+            var sqlTxt = @"select  * from usp_GetInitiateCheckOut()";
             var result = _dapperHelper.Query(sqlTxt);
 
             foreach (var item in result)
             {
-                if (tempid == 0 || tempid != item.eventid)
-                {
-                //    list = new InitiateCheckoutRModel();
                     var pd = new List<Products>();
-                    foreach (var prod in result)
+                    var @params = new { eventid = item._eventid };
+                    var sqlProd = @"select  * from usp_getproducts(@eventid)";
+                    var ProdResult = _dapperHelper.Query(sqlProd, @params);
+
+                    foreach (var prod in ProdResult)
                     {
-                        if (prod.eventid == item.eventid)
-                        {
-                            pd.Add(new Products() { productid = prod.productid, quantity = prod.quantity });
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        pd.Add(new Products() { productid = prod._productid, quantity = prod._quantity });
                     }
                     list.Add(new InitiateCheckoutRModel()
                     {
-                        eventid = item.eventid,
+                        eventid = item._eventid,
                         Products = pd,
-                        currency = item.currency,
-                        total_value = item.total_value,
-                        url = item.url,
-                        email = item.email,
-                        first_name = item.first_name,
-                        last_name = item.last_name,
-                        phone = item.phone,
-                        gender = item.gender,
-                        DOB = item.dob,
-                        city = item.city,
-                        state = item.state,
-                        country = item.country,
-                        user_ip = item.user_ip,
-                        browser_user_agent = item.browser_user_agent,
-                        clickid = item.clickid,
-                        browserid = item.browserid,
-                        fb_loginid = item.fb_loginid,
+                        currency = item._currency,
+                        total_value = item._total_value,
+                        url = item._url,
+                        email = item._email,
+                        first_name = item._first_name,
+                        last_name = item._last_name,
+                        phone = item._phone,
+                        gender = item._gender,
+                        DOB = item._dob,
+                        city = item._city,
+                        state = item._state,
+                        country = item._country,
+                        user_ip = item._user_ip,
+                        browser_user_agent = item._browser_user_agent,
+                        clickid = item._clickid,
+                        browserid = item._browserid,
+                        fb_loginid = item._fb_loginid,
                     });
-                }
-                tempid = item.eventid;
             }
             UpdateCompleteRecord("init_checkout_lg");
             return list;
@@ -441,29 +445,29 @@ namespace CoreBaseLib.Models
         {
             List<PageViewRModel> list = new List<PageViewRModel>();
             LockRecordData("page_view_lg");
-            var sqlTxt = @"SELECT * FROM page_view_lg WHERE status = 1  order by createtimestamp asc  ";
+            var sqlTxt = @"select  * from usp_GetPageView()";
             var result = _dapperHelper.Query(sqlTxt);
 
             foreach (var item in result)
             {
                 list.Add(new PageViewRModel()
                 {
-                    eventid = item.eventid,
-                    url = item.url,
-                    email = item.email,
-                    first_name = item.first_name,
-                    last_name = item.last_name,
-                    phone = item.phone,
-                    gender = item.gender,
-                    DOB = item.dob,
-                    city = item.city,
-                    state = item.state,
-                    country = item.country,
-                    user_ip = item.user_ip,
-                    browser_user_agent = item.browser_user_agent,
-                    clickid = item.clickid,
-                    browserid = item.browserid,
-                    fb_loginid = item.fb_loginid,
+                    eventid = item._eventid,
+                    url = item._url,
+                    email = item._email,
+                    first_name = item._first_name,
+                    last_name = item._last_name,
+                    phone = item._phone,
+                    gender = item._gender,
+                    DOB = item._dob,
+                    city = item._city,
+                    state = item._state,
+                    country = item._country,
+                    user_ip = item._user_ip,
+                    browser_user_agent = item._browser_user_agent,
+                    clickid = item._clickid,
+                    browserid = item._browserid,
+                    fb_loginid = item._fb_loginid,
                 });
 
                 }
@@ -475,55 +479,44 @@ namespace CoreBaseLib.Models
         public List<PurchaseRModel>  GetPurchaseData()
         {
             List<PurchaseRModel> list = new List<PurchaseRModel>();
-            long tempid = 0;
+
             LockRecordData("purchase_lg");
-            var sqlTxt = @"SELECT *
-                                    FROM purchase_lg  inner join products ON purchase_lg.eventid = products.eventid 
-                                    WHERE status = 1 order by createtimestamp asc";
+            var sqlTxt = @"select  * from usp_getpurchasedata()";
             var result = _dapperHelper.Query(sqlTxt);
 
             foreach (var item in result)
             {
-                if (tempid == 0 || tempid != item.eventid)
-                {
-                  // list = new PurchaseRModel();
                     var pd = new List<Products>();
-                  //  list.eventid = item.eventid;
-                    foreach (var prod in result)
+                    var @params = new { eventid = item._eventid };
+                    var sqlProd = @"select  * from usp_getproducts(@eventid)";
+                    var ProdResult = _dapperHelper.Query(sqlProd, @params);
+
+                    foreach (var prod in ProdResult)
                     {
-                        if (prod.eventid == item.eventid)
-                        {
-                            pd.Add(new Products() { productid = prod.productid, quantity = prod.quantity });
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        pd.Add(new Products() { productid = prod._productid, quantity = prod._quantity });
                     }
                     list.Add(new PurchaseRModel()
                     {
-                        eventid = item.eventid,
+                        eventid = item._eventid,
                         Products = pd,
-                        currency = item.currency,
-                        total_value = item.total_value,
-                        url = item.url,
-                        email = item.email,
-                        first_name = item.first_name,
-                        last_name = item.last_name,
-                        phone = item.phone,
-                        gender = item.gender,
-                        DOB = item.dob,
-                        city = item.city,
-                        state = item.state,
-                        country = item.country,
-                        user_ip = item.user_ip,
-                        browser_user_agent = item.browser_user_agent,
-                        clickid = item.clickid,
-                        browserid = item.browserid,
-                        fb_loginid = item.fb_loginid,
+                        currency = item._currency,
+                        total_value = item._total_value,
+                        url = item._url,
+                        email = item._email,
+                        first_name = item._first_name,
+                        last_name = item._last_name,
+                        phone = item._phone,
+                        gender = item._gender,
+                        DOB = item._dob,
+                        city = item._city,
+                        state = item._state,
+                        country = item._country,
+                        user_ip = item._user_ip,
+                        browser_user_agent = item._browser_user_agent,
+                        clickid = item._clickid,
+                        browserid = item._browserid,
+                        fb_loginid = item._fb_loginid,
                     });
-                }
-                tempid = item.eventid;
             }
             UpdateCompleteRecord("purchase_lg");
             return list;
@@ -534,56 +527,45 @@ namespace CoreBaseLib.Models
         public List<SearchRModel>  GetSearchData()
         {
             List<SearchRModel> list = new List<SearchRModel>();
-            long tempid = 0;
+
             LockRecordData("search_lg");
-            var sqlTxt = @"SELECT *
-                                    FROM search_lg  inner join products ON search_lg.eventid = products.eventid 
-                                    WHERE status = 1 order by createtimestamp asc";
+            var sqlTxt = @"select  * from usp_GetSearch()";
             var result = _dapperHelper.Query(sqlTxt);
 
             foreach (var item in result)
             {
-                if (tempid == 0 || tempid != item.eventid)
-                {
-                   // list = new SearchRModel();
                     var pd = new List<Products>();
-                   // list.eventid = item.eventid;
-                    foreach (var prod in result)
+                    var @params = new { eventid = item._eventid };
+                    var sqlProd = @"select  * from usp_getproducts(@eventid)";
+                    var ProdResult = _dapperHelper.Query(sqlProd, @params);
+
+                    foreach (var prod in ProdResult)
                     {
-                        if (prod.eventid == item.eventid)
-                        {
-                            pd.Add(new Products() { productid = prod.productid, quantity = prod.quantity });
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        pd.Add(new Products() { productid = prod._productid, quantity = prod._quantity });
                     }
                     list.Add(new SearchRModel()
                     {
-                        eventid = item.eventid,
-                        search_str = item.search_str,
+                        eventid = item._eventid,
+                        search_str = item._search_str,
                         Products = pd,
-                        currency = item.currency,
-                        value = item.value,
-                        url = item.url,
-                        email = item.email,
-                        first_name = item.first_name,
-                        last_name = item.last_name,
-                        phone = item.phone,
-                        gender = item.gender,
-                        DOB = item.dob,
-                        city = item.city,
-                        state = item.state,
-                        country = item.country,
-                        user_ip = item.user_ip,
-                        browser_user_agent = item.browser_user_agent,
-                        clickid = item.clickid,
-                        browserid = item.browserid,
-                        fb_loginid = item.fb_loginid,
+                        currency = item._currency,
+                        value = item._value,
+                        url = item._url,
+                        email = item._email,
+                        first_name = item._first_name,
+                        last_name = item._last_name,
+                        phone = item._phone,
+                        gender = item._gender,
+                        DOB = item._dob,
+                        city = item._city,
+                        state = item._state,
+                        country = item._country,
+                        user_ip = item._user_ip,
+                        browser_user_agent = item._browser_user_agent,
+                        clickid = item._clickid,
+                        browserid = item._browserid,
+                        fb_loginid = item._fb_loginid,
                     });
-                }
-                tempid = item.eventid;
             }
             UpdateCompleteRecord("search_lg");
             return list;
@@ -594,34 +576,32 @@ namespace CoreBaseLib.Models
         {
             List<SubscribeRModel> list = new List<SubscribeRModel>();
             LockRecordData("subscribe_lg");
-            var sqlTxt = @"SELECT * FROM subscribe_lg WHERE status = 1 order by createtimestamp asc  ";
+            var sqlTxt = @"select  * from usp_GetSubscribe()";
             var result = _dapperHelper.Query(sqlTxt);
 
             foreach (var item in result)
             {
-                //list = new SubscribeRModel();
-
                 list.Add(new SubscribeRModel()
                 {
-                    eventid = item.eventid,
-                    predicted_itv = item.predicted_itv,
-                    currency = item.currency,
-                    value = item.value,
-                    url = item.url,
-                    email = item.email,
-                    first_name = item.first_name,
-                    last_name = item.last_name,
-                    phone = item.phone,
-                    gender = item.gender,
-                    DOB = item.dob,
-                    city = item.city,
-                    state = item.state,
-                    country = item.country,
-                    user_ip = item.user_ip,
-                    browser_user_agent = item.browser_user_agent,
-                    clickid = item.clickid,
-                    browserid = item.browserid,
-                    fb_loginid = item.fb_loginid,
+                    eventid = item._eventid,
+                    predicted_itv = item._predicted_itv,
+                    currency = item._currency,
+                    value = item._total_value,
+                    url = item._url,
+                    email = item._email,
+                    first_name = item._first_name,
+                    last_name = item._last_name,
+                    phone = item._phone,
+                    gender = item._gender,
+                    DOB = item._dob,
+                    city = item._city,
+                    state = item._state,
+                    country = item._country,
+                    user_ip = item._user_ip,
+                    browser_user_agent = item._browser_user_agent,
+                    clickid = item._clickid,
+                    browserid = item._browserid,
+                    fb_loginid = item._fb_loginid,
                 });
 
             }
