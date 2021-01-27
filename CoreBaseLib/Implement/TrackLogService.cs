@@ -373,6 +373,7 @@ namespace CoreBaseLib.Models
                     reg_status = item._reg_status,
                     currency = item._currency,
                     total_value = item._total_value,
+                    url = item._url,
                     email = item._email,
                     first_name = item._first_name,
                     last_name = item._last_name,
