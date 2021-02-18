@@ -39,5 +39,8 @@ namespace CoreBaseLib.Models
         public DateTime createtimestamp { get; set; }
 
         public int status { get; set; }
+
+        public string orderid { get; set; }
+        public string channel { get; set; }
     }
 }

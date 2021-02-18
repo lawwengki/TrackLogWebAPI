@@ -38,5 +38,7 @@ namespace CoreBaseLib.Models
 
         public int status { get; set; }
 
+        public string channel { get; set; }
+
     }
 }
