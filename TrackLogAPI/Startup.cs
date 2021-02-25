@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
 
 namespace CoreBase
 {
@@ -59,8 +60,14 @@ namespace CoreBase
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CoreBase v1"));
             app.UseHttpsRedirection();
-          //  app.UseDefaultFiles();
-          //  app.UseStaticFiles();
+            app.UseDefaultFiles();
+           // app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                 Path.Combine(env.ContentRootPath, ".well-known")),
+                RequestPath = "/.well-known"
+            });
             app.UseRouting();
             app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthorization();

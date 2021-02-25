@@ -2,7 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>35d19752-3e21-4989-afc7-9407410ca626</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include=".well-known\pki-validation\3F185A56A5A8B4D9E180D0CC84A6FBA8.txt" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
